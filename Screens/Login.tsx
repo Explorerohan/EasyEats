@@ -11,4 +11,10 @@ const Login = () => {
 
 export default Login
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  text:{
+    fontSize:40,
+    fontWeight: 'bold',
+    color: 'red',
+  }
+})
