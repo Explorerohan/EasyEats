@@ -3,8 +3,8 @@ import React from 'react'
 
 const Login = () => {
   return (
-    <View>
-      <Text>Login</Text>
+    <View style={{height:600,width:'100%',justifyContent:'center',alignItems:'center'}}>
+      <Text style={styles.text}>Login</Text>
     </View>
   )
 }
@@ -16,5 +16,6 @@ const styles = StyleSheet.create({
     fontSize:40,
     fontWeight: 'bold',
     color: 'red',
+    textDecorationLine:'underline'
   }
 })
