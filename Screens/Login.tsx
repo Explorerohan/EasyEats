@@ -11,6 +11,13 @@ import salad from '../assets/salad.png'
 import shusi from '../assets/shusi.jpg'
 import spa from '../assets/spa.jpg'
 import tor from '../assets/tor.jpg'
+import curry from '../assets/curry.webp'
+import beef from '../assets/beef.jpg'
+import vege from '../assets/vege.jpg'
+import steak from '../assets/steak.webp'
+import dessert from '../assets/dessert.webp'
+
+
 
 export default function App() {
   return (
@@ -74,7 +81,7 @@ export default function App() {
             {/* Add three more items */}
             <View style={styles.recipeItem}>
               <Image
-                source={spa}
+                source={curry}
                 style={styles.trendingImage}
               />
               <Text style={styles.recipeInfo}>Chicken Curry Recipe</Text>
@@ -82,7 +89,7 @@ export default function App() {
             </View>
             <View style={styles.recipeItem}>
               <Image
-                source={rohan}
+                source={vege}
                 style={styles.trendingImage}
               />
               <Text style={styles.recipeInfo}>Vegetable Stir Fry</Text>
@@ -90,7 +97,7 @@ export default function App() {
             </View>
             <View style={styles.recipeItem}>
               <Image
-                source={rohan}
+                source={beef}
                 style={styles.trendingImage}
               />
               <Text style={styles.recipeInfo}>Beef Tacos</Text>
@@ -140,21 +147,21 @@ export default function App() {
           </View>
           <View style={styles.categoryItem}>
             <Image
-              source={{ uri: 'rohan' }}
+              source={steak}
               style={styles.categoryImage}
             />
             <Text style={styles.categoryIcon}>🥩 Steak</Text>
           </View>
           <View style={styles.categoryItem}>
             <Image
-              source={{ uri: 'rohan' }}
+              source={dessert}
               style={styles.categoryImage}
             />
             <Text style={styles.categoryIcon}>🍰 Desserts</Text>
           </View>
           <View style={styles.categoryItem}>
             <Image
-              source={{ uri: 'rohan' }}
+              source={beef}
               style={styles.categoryImage}
             />
             <Text style={styles.categoryIcon}>🌮 Tacos</Text>
