@@ -1,21 +1,19 @@
 import React from 'react';
 import { View, Text, TextInput, Image, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import burger from '../assets/burger2.jpg'
-import fryrice from '../assets/fryrice.jpg'
-import pasta from '../assets/pas2.jpg'
-import pasta2 from '../assets/pasta.webp'
-import pizza from '../assets/pizza.png'
-import rohan from '..//assets/rohan.jpg'
-import salad from '../assets/salad.png'
-import shusi from '../assets/shusi.jpg'
-import spa from '../assets/spa.jpg'
-import tor from '../assets/tor.jpg'
-import curry from '../assets/curry.webp'
-import beef from '../assets/beef.jpg'
-import vege from '../assets/vege.jpg'
-import steak from '../assets/steak.webp'
-import dessert from '../assets/dessert.webp'
+import burger from '../../assets/burger2.jpg'
+import pasta from '../../assets/pas2.jpg'
+import pasta2 from '../../assets/pasta.webp'
+import pizza from '../../assets/pizza.png'
+import rohan from '../../assets/rohan.jpg'
+import salad from '../../assets/salad.png'
+import shusi from '../../assets/shusi.jpg'
+import tor from '../../assets/tor.jpg'
+import curry from '../../assets/curry.webp'
+import beef from '../../assets/beef.jpg'
+import vege from '../../assets/vege.jpg'
+import steak from '../../assets/steak.webp'
+import dessert from '../../assets/dessert.webp'
 
 
 
@@ -189,7 +187,7 @@ export default function App() {
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
           <Image
-            source={{ uri: 'rohan' }}
+            source={rohan}
             style={styles.profileIcon}
           />
           <Text style={styles.navText}>Profile</Text>

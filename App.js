@@ -1,10 +1,14 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from './Screens/Login';
+import home from './Screens/Main/HomePage';
+import Started from './Screens/Auth/Started';
+import login from './Screens/Auth/Login';
+import signup from './Screens/Auth/Signup'
 
 
 const Stack = createStackNavigator();
+
 
 const App = () => {
 
@@ -12,7 +16,10 @@ const App = () => {
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name='Login' component={Login} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name='Started' component={Started} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name='home' component={home} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name='login' component={login} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name='signup' component={signup} options={{headerShown: false}}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
