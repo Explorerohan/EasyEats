@@ -14,7 +14,6 @@ export default function Login({ navigation }) {
         navigation.navigate('home');
     };
 
-
     return (
         <ImageBackground
             source={require('../../assets/fryrice.jpg')}
@@ -41,7 +40,7 @@ export default function Login({ navigation }) {
 
                     <View style={styles.passwordContainer}>
                         <TextInput
-                            style={[styles.input, styles.passwordInput]}
+                            style={styles.passwordInput}
                             placeholder="Password"
                             placeholderTextColor="#999"
                             secureTextEntry={!passwordVisible}
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
     },
     card: {
         width: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         padding: 20,
         borderRadius: 12,
         shadowColor: '#000',
@@ -134,6 +133,7 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '100%',
+        height: 50,
         backgroundColor: '#2A2A2A',
         borderRadius: 8,
         padding: 12,
@@ -142,19 +142,20 @@ const styles = StyleSheet.create({
     },
     passwordContainer: {
         width: '100%',
+        height: 50,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#2A2A2A',
         borderRadius: 8,
+        paddingHorizontal: 12,
         marginBottom: 15,
     },
     passwordInput: {
         flex: 1,
-        paddingRight: 40,
+        color: '#FFFFFF',
     },
     eyeIcon: {
-        position: 'absolute',
-        right: 10,
+        marginLeft: 10,
     },
     button: {
         backgroundColor: '#007A4D',
