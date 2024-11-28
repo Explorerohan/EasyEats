@@ -16,8 +16,10 @@ import steak from '../../assets/steak.webp'
 import dessert from '../../assets/dessert.webp'
 
 
-
-export default function App() {
+export default function App({navigation}) {
+  const handleprofile = () => {
+    navigation.navigate('profile');
+};
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -185,7 +187,7 @@ export default function App() {
           <Ionicons name="chatbubble-outline" size={24} color="#333" />
           <Text style={styles.navText}>Chat</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={handleprofile}>
           <Image
             source={rohan}
             style={styles.profileIcon}
