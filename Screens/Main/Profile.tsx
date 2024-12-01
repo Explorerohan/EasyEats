@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   nameText: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
     marginVertical: 5,
   },
