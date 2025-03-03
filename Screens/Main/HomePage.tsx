@@ -20,6 +20,7 @@ export default function App({navigation}) {
   const handleprofile = () => {
     navigation.navigate('profile');
 };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -301,7 +302,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    marginRight: 16, // Added margin to the right for spacing
+    marginRight: 16,
   },
   trendingImage: {
     width: 140,
