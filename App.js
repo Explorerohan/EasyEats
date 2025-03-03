@@ -1,11 +1,11 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import home from './Screens/Main/HomePage';
+import Home from './Screens/Main/HomePage';
 import Started from './Screens/Auth/Started';
-import login from './Screens/Auth/Login';
-import signup from './Screens/Auth/Signup'
-import profile from './Screens/Main/Profile'
+import Login from './Screens/Auth/Login';
+import Signup from './Screens/Auth/Signup'
+import Profile from './Screens/Main/Profile'
 
 
 const Stack = createStackNavigator();
@@ -18,10 +18,10 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator>
         <Stack.Screen name='Started' component={Started} options={{headerShown: false}}></Stack.Screen>
-        <Stack.Screen name='home' component={home} options={{headerShown: false}}></Stack.Screen>
-        <Stack.Screen name='login' component={login} options={{headerShown: false}}></Stack.Screen>
-        <Stack.Screen name='signup' component={signup} options={{headerShown: false}}></Stack.Screen>
-        <Stack.Screen name='profile' component={profile} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name='Home' component={Home} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name='Login' component={Login} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name='Signup' component={Signup} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name='Profile' component={Profile} options={{headerShown: false}}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

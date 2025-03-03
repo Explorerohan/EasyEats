@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ImageBackground, TouchableOpacity, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient'; // Import LinearGradient
+import { LinearGradient } from 'expo-linear-gradient'; // Importing LinearGradient
 
 export default function App({navigation}) {
     const handleLogin=()=>{
@@ -10,13 +10,13 @@ export default function App({navigation}) {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../../assets/fryrice.jpg')} // Replace with your actual image path
+        source={require('../../assets/fryrice.jpg')}
         style={styles.imageBackground}
         resizeMode="cover"
       >
         {/* Gradient overlay on the background image */}
         <LinearGradient
-          colors={['rgba(0, 0, 0, 0.0)', 'rgba(0, 0, 0, 0.8)']} // Gradient from transparent to darker
+          colors={['rgba(0, 0, 0, 0.0)', 'rgba(0, 0, 0, 0.8)']} 
           style={styles.imageOverlay}
         />
 
@@ -59,25 +59,25 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#FFFFFF', // White text for contrast
+    color: '#FFFFFF', 
     marginBottom: 10,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
-    color: '#E0E0E0', // Slightly lighter gray for better readability
+    color: '#E0E0E0', 
     textAlign: 'center',
     marginBottom: 20,
   },
   button: {
-    backgroundColor: '#007A4D', // Darker green for the button
+    backgroundColor: '#007A4D',
     paddingVertical: 12,
     paddingHorizontal: 25,
     borderRadius: 8,
   },
   buttonText: {
     fontSize: 16,
-    color: '#FFFFFF', // White text for contrast
+    color: '#FFFFFF', 
     fontWeight: 'bold',
   },
 });
