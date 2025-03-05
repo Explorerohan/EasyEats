@@ -18,7 +18,7 @@ import dessert from '../../assets/dessert.webp'
 
 export default function App({navigation}) {
   const handleprofile = () => {
-    navigation.navigate('profile');
+    navigation.navigate('Profile');
 };
 
   return (

@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'; // Importing LinearGradie
 export default function App({navigation}) {
     const handleLogin=()=>{
         // console.log('login')
-        navigation.navigate('login')
+        navigation.navigate('Login')
       }
   return (
     <View style={styles.container}>
