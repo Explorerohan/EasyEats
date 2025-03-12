@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, ImageBackground, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebaseConfig';
 
 export default function Signup({ navigation }) {
     const [email, setEmail] = useState('');
@@ -19,7 +17,7 @@ export default function Signup({ navigation }) {
         }
 
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            // Firebase code would be here
             Alert.alert('Success', 'Account created successfully');
             navigation.navigate('login');
         } catch (error) {

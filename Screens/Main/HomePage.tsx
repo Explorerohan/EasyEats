@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, TextInput, Image, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Image, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Platform } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
 import burger from '../../assets/burger2.jpg'
 import pasta from '../../assets/pas2.jpg'
 import pasta2 from '../../assets/pasta.webp'
@@ -15,54 +17,170 @@ import vege from '../../assets/vege.jpg'
 import steak from '../../assets/steak.webp'
 import dessert from '../../assets/dessert.webp'
 
+type RootStackParamList = {
+  Home: undefined;
+  Profile: undefined;
+  // Add other screen names as needed
+};
 
-export default function App({navigation}) {
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
+interface HomeProps {
+  navigation: HomeScreenNavigationProp;
+}
+
+export default function App({ navigation }: HomeProps) {
   const handleprofile = () => {
     navigation.navigate('Profile');
 };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <View>
+          <View style={styles.headerTextContainer}>
             <Text style={styles.headerText}>Hello Greshma,</Text>
-            <Text style={styles.headerTextRecipes}>Let’s Sizzle!</Text>
+            <Text style={styles.headerTextRecipes}>What would you like to cook?</Text>
           </View>
           <View style={styles.headerIcons}>
-            <Ionicons name="notifications-outline" size={24} color="#333" style={styles.notificationIcon} />
+            <TouchableOpacity style={styles.iconButton}>
+              <Ionicons name="notifications-outline" size={24} color="#333" />
+              <View style={styles.notificationBadge}>
+                <Text style={styles.badgeNumber}>2</Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
 
         {/* Search Bar */}
         <View style={styles.searchBarContainer}>
+          <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
           <TextInput
             style={styles.searchBar}
-            placeholder="Search here..."
+            placeholder="Search recipes, ingredients..."
             placeholderTextColor="#999"
           />
-          <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
+          <TouchableOpacity style={styles.filterButton}>
+            <Ionicons name="filter" size={20} color="#666" />
+          </TouchableOpacity>
         </View>
 
-        {/* Just For You Section */}
+        {/* Featured Recipe */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Just For You</Text>
-          <View style={styles.recipeCard}>
-            <Image
-              source={ pasta2}
-              style={styles.recipeImage}
-            />
-            <View style={styles.overlay}>
-              <Text style={styles.overlayText}>15 best pasta recipes from chef John</Text>
-            </View>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Featured Recipe</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAllText}>See all</Text>
+            </TouchableOpacity>
           </View>
+          <TouchableOpacity style={styles.featuredCard}>
+            <Image
+              source={pasta2}
+              style={styles.featuredImage}
+            />
+            <LinearGradient
+              colors={['transparent', 'rgba(0,0,0,0.8)']}
+              style={styles.featuredOverlay}
+            >
+              <View style={styles.featuredContent}>
+                <View style={styles.featuredBadge}>
+                  <Text style={styles.badgeText}>Premium</Text>
+                </View>
+                <Text style={styles.featuredTitle}>Italian Pasta Masterclass</Text>
+                <View style={styles.featuredMeta}>
+                  <View style={styles.metaItem}>
+                    <Ionicons name="time-outline" size={16} color="#fff" />
+                    <Text style={styles.metaText}>30 min</Text>
+                  </View>
+                  <View style={styles.metaItem}>
+                    <Ionicons name="star" size={16} color="#FFD700" />
+                    <Text style={styles.metaText}>4.8</Text>
+                  </View>
+                </View>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+
+        {/* Categories */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Categories</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAllText}>See all</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false} 
+            contentContainerStyle={styles.categoriesContainer}
+          >
+            <View style={styles.categoryItem}>
+              <Image
+                source={pizza}
+                style={styles.categoryImage}
+              />
+              <Text style={styles.categoryIcon}>🍕 Pizza</Text>
+            </View>
+            <View style={styles.categoryItem}>
+              <Image
+                source={salad}
+                style={styles.categoryImage}
+              />
+              <Text style={styles.categoryIcon}>🥗 Salad</Text>
+            </View>
+            <View style={styles.categoryItem}>
+              <Image
+                source={burger}
+                style={styles.categoryImage}
+              />
+              <Text style={styles.categoryIcon}>🍔 Burgers</Text>
+            </View>
+            <View style={styles.categoryItem}>
+              <Image
+                source={pasta}
+                style={styles.categoryImage}
+              />
+              <Text style={styles.categoryIcon}>🍝 Pasta</Text>
+            </View>
+            <View style={styles.categoryItem}>
+              <Image
+                source={shusi}
+                style={styles.categoryImage}
+              />
+              <Text style={styles.categoryIcon}>🍣 Sushi</Text>
+            </View>
+            <View style={styles.categoryItem}>
+              <Image
+                source={steak}
+                style={styles.categoryImage}
+              />
+              <Text style={styles.categoryIcon}>🥩 Steak</Text>
+            </View>
+            <View style={styles.categoryItem}>
+              <Image
+                source={dessert}
+                style={styles.categoryImage}
+              />
+              <Text style={styles.categoryIcon}>🍰 Desserts</Text>
+            </View>
+          </ScrollView>
         </View>
 
         {/* Trending Recipes */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Trending Recipes</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.trendingList}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Trending Now</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAllText}>See all</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false} 
+            contentContainerStyle={styles.trendingList}
+          >
             <View style={styles.recipeItem}>
               <Image
                 source={tor}
@@ -79,7 +197,6 @@ export default function App({navigation}) {
               <Text style={styles.recipeInfo}>Salmon Sushi Recipe</Text>
               <Text style={styles.rating}>⭐ 4.8</Text>
             </View>
-            {/* Add three more items */}
             <View style={styles.recipeItem}>
               <Image
                 source={curry}
@@ -106,93 +223,34 @@ export default function App({navigation}) {
             </View>
           </ScrollView>
         </View>
-
-        {/* Category Footer with Circular Images */}
-        <Text style={styles.categoriesTitle}>Categories</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryFooter}>
-          <View style={styles.categoryItem}>
-            <Image
-              source={pizza}
-              style={styles.categoryImage}
-            />
-            <Text style={styles.categoryIcon}>🍕 Pizza</Text>
-          </View>
-          <View style={styles.categoryItem}>
-            <Image
-              source={salad}
-              style={styles.categoryImage}
-            />
-            <Text style={styles.categoryIcon}>🥗 Salad</Text>
-          </View>
-          <View style={styles.categoryItem}>
-            <Image
-              source={burger}
-              style={styles.categoryImage}
-            />
-            <Text style={styles.categoryIcon}>🍔 Burgers</Text>
-          </View>
-          <View style={styles.categoryItem}>
-            <Image
-              source={pasta}
-              style={styles.categoryImage}
-            />
-            <Text style={styles.categoryIcon}>🍝 Pasta</Text>
-          </View>
-          {/* Additional Category Items */}
-          <View style={styles.categoryItem}>
-            <Image
-              source={shusi}
-              style={styles.categoryImage}
-            />
-            <Text style={styles.categoryIcon}>🍣 Sushi</Text>
-          </View>
-          <View style={styles.categoryItem}>
-            <Image
-              source={steak}
-              style={styles.categoryImage}
-            />
-            <Text style={styles.categoryIcon}>🥩 Steak</Text>
-          </View>
-          <View style={styles.categoryItem}>
-            <Image
-              source={dessert}
-              style={styles.categoryImage}
-            />
-            <Text style={styles.categoryIcon}>🍰 Desserts</Text>
-          </View>
-          <View style={styles.categoryItem}>
-            <Image
-              source={beef}
-              style={styles.categoryImage}
-            />
-            <Text style={styles.categoryIcon}>🌮 Tacos</Text>
-          </View>
-        </ScrollView>
       </ScrollView>
 
       {/* Bottom Navigation */}
       <View style={styles.bottomNavigation}>
+        <View style={styles.navItem}>
+          <View style={styles.activeIconBackground}>
+            <Ionicons name="home" size={24} color="#007AFF" />
+          </View>
+          <Text style={styles.navTextActive}>Home</Text>
+        </View>
+        
         <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="home-outline" size={24} color="#333" />
-          <Text style={styles.navText}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="compass-outline" size={24} color="#333" />
+          <Ionicons name="compass-outline" size={24} color="#666" />
           <Text style={styles.navText}>Discover</Text>
         </TouchableOpacity>
+        
         <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="heart-outline" size={24} color="#333" />
+          <Ionicons name="heart-outline" size={24} color="#666" />
           <Text style={styles.navText}>Favorites</Text>
         </TouchableOpacity>
+        
         <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="chatbubble-outline" size={24} color="#333" />
+          <Ionicons name="chatbubble-outline" size={24} color="#666" />
           <Text style={styles.navText}>Chat</Text>
         </TouchableOpacity>
+        
         <TouchableOpacity style={styles.navItem} onPress={handleprofile}>
-          <Image
-            source={rohan}
-            style={styles.profileIcon}
-          />
+          <Image source={rohan} style={styles.profileIcon} />
           <Text style={styles.navText}>Profile</Text>
         </TouchableOpacity>
       </View>
@@ -203,88 +261,185 @@ export default function App({navigation}) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f8f9fb',
+    backgroundColor: '#FFFFFF',
   },
   container: {
     flexGrow: 1,
-    paddingTop: 50,
-    padding: 16,
-    backgroundColor: '#f8f9fb',
+    paddingTop: 16,
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 20,
+    marginBottom: 8,
+  },
+  headerTextContainer: {
+    flex: 1,
+    paddingRight: 60,
+  },
+  headerText: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 6,
+    fontWeight: '500',
+    letterSpacing: 0.3,
+  },
+  headerTextRecipes: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#1A1A1A',
+    letterSpacing: 0.2,
+    lineHeight: 34,
+  },
+  headerIcons: {
+    position: 'absolute',
+    right: 20,
+    top: 16,
+  },
+  iconButton: {
+    padding: 10,
+    borderRadius: 16,
+    backgroundColor: '#ffffff',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  notificationBadge: {
+    position: 'absolute',
+    right: -2,
+    top: -2,
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#FF3B30',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: '#FFFFFF',
+  },
+  badgeNumber: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: 'bold',
+  },
+  searchBarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 20,
+    paddingHorizontal: 15,
+    height: 50,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  searchBar: {
+    flex: 1,
+    marginLeft: 10,
+    fontSize: 16,
+    color: '#333',
+    height: '100%',
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  filterButton: {
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  section: {
+    marginTop: 24,
+    paddingHorizontal: 20,
+  },
+  sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 16,
   },
-  headerText: {
-    fontSize: 15,
-    color: '#2e7d32',
-    fontWeight: 'bold',
-  },
-  headerTextRecipes: {
-    fontSize: 25,
-    color: '#2e7d32',
-    fontWeight: 'bold',
-    marginTop: -6,
-  },
-  headerIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  notificationIcon: {
-    marginLeft: 10,
-  },
-  searchBarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 7,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
-  searchBar: {
-    flex: 1,
-    padding: 10,
-  },
-  searchIcon: {
-    marginRight: 10,
-  },
-  section: {
-    marginTop: 24,
-  },
   sectionTitle: {
-    fontSize: 18,
-    color: '#333',
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#333',
   },
-  recipeCard: {
-    borderRadius: 15,
+  seeAllText: {
+    fontSize: 14,
+    color: '#007AFF',
+    fontWeight: '500',
+  },
+  featuredCard: {
+    height: 200,
+    borderRadius: 16,
     overflow: 'hidden',
-    position: 'relative',
+    backgroundColor: '#FFF',
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
     elevation: 5,
   },
-  recipeImage: {
+  featuredImage: {
     width: '100%',
-    height: 180,
+    height: '100%',
   },
-  overlay: {
+  featuredOverlay: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    padding: 10,
+    height: '70%',
+    padding: 16,
+    justifyContent: 'flex-end',
   },
-  overlayText: {
-    color: '#fff',
-    fontSize: 16,
+  featuredContent: {
+    gap: 8,
+  },
+  featuredBadge: {
+    backgroundColor: '#007AFF',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+  },
+  badgeText: {
+    color: '#FFF',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  featuredTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFF',
+  },
+  featuredMeta: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  metaItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  metaText: {
+    color: '#FFF',
+    fontSize: 14,
   },
   trendingList: {
     flexDirection: 'row',
@@ -292,87 +447,117 @@ const styles = StyleSheet.create({
     paddingVertical: 10, 
   },
   recipeItem: {
-    width: 140,
+    width: 160,
     alignItems: 'center',
-    borderRadius: 20,
+    borderRadius: 16,
     overflow: 'hidden',
     backgroundColor: '#fff',
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    elevation: 4,
     marginRight: 16,
+    marginBottom: 4,
   },
   trendingImage: {
-    width: 140,
-    height: 140,
+    width: 160,
+    height: 160,
   },
   recipeInfo: {
-    marginTop: 5,
-    fontSize: 14,
-    color: '#333',
+    marginTop: 8,
+    fontSize: 15,
+    color: '#1A1A1A',
+    fontWeight: '600',
     textAlign: 'center',
+    paddingHorizontal: 8,
   },
   rating: {
-    color: '#ff9800',
-    fontSize: 12,
-    marginTop: 2,
+    color: '#FFA000',
+    fontSize: 13,
+    fontWeight: '600',
+    marginTop: 4,
+    marginBottom: 8,
     textAlign: 'center',
   },
-  categoriesTitle: {
-    fontSize: 18,
-    color: '#333',
-    fontWeight: 'bold',
-    marginTop:20,
-  },
-  categoryFooter: {
+  categoriesContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    marginTop: 10, // Reduced margin to push it higher
-    paddingVertical: 10,
+    marginTop: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 16,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.08,
     shadowRadius: 4,
-    elevation: 2,
+    elevation: 3,
   },
   categoryItem: {
     alignItems: 'center',
-    marginRight: 16, // Added margin to the right for spacing
+    marginRight: 16,
   },
   categoryImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    marginBottom: 4,
+    width: 75,
+    height: 75,
+    borderRadius: 38,
+    marginBottom: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
   },
   categoryIcon: {
     fontSize: 14,
+    fontWeight: '500',
     textAlign: 'center',
-    color: '#333',
+    color: '#424242',
   },
   bottomNavigation: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingVertical: 10,
+    paddingTop: 12,
+    paddingBottom: Platform.OS === 'ios' ? 24 : 12,
     backgroundColor: '#fff',
     borderTopWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#EEEEEE',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 5,
   },
   navItem: {
     alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 64,
+  },
+  activeIconBackground: {
+    backgroundColor: '#E8F2FF',
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 4,
   },
   navText: {
     fontSize: 12,
-    color: '#333',
+    color: '#666',
+    marginTop: 4,
+  },
+  navTextActive: {
+    fontSize: 12,
+    color: '#007AFF',
+    fontWeight: '600',
     marginTop: 4,
   },
   profileIcon: {
     width: 24,
     height: 24,
     borderRadius: 12,
+    marginBottom: 4,
   },
 });
