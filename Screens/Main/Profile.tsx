@@ -45,6 +45,7 @@ const { width, height } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.75;
 
 export default function Profile({ navigation }: ProfileProps) {
+  const [scrollPosition, setScrollPosition] = useState(0);
   const settingsOptions = [
     { icon: 'create-outline', label: 'Edit Profile', color: '#007AFF' },
     { icon: 'add-circle-outline', label: 'New Recipe', color: '#4CAF50' },
@@ -57,52 +58,61 @@ export default function Profile({ navigation }: ProfileProps) {
   ] as const;
 
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
-  const slideAnim = useRef(new Animated.Value(-200)).current;
+  const [isAnimating, setIsAnimating] = useState(false);
+  const slideAnim = useRef(new Animated.Value(-height)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
 
-  const showSettings = () => {
-    setIsSettingsVisible(true);
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        tension: 65,
-        friction: 10,
-        useNativeDriver: true,
-      }),
-      Animated.timing(rotateAnim, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-    ]).start();
+  const animate = (show: boolean): Promise<void> => {
+    return new Promise((resolve) => {
+      setIsAnimating(true);
+      if (show) {
+        setIsSettingsVisible(true);
+      }
+      
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: show ? 1 : 0,
+          duration: 150,
+          useNativeDriver: true,
+          easing: Easing.out(Easing.ease),
+        }),
+        Animated.timing(slideAnim, {
+          toValue: show ? 0 : -height,
+          duration: 150,
+          useNativeDriver: true,
+          easing: Easing.out(Easing.ease),
+        }),
+      ]).start(({ finished }) => {
+        if (!show && finished) {
+          setTimeout(() => {
+            setIsSettingsVisible(false);
+            setIsAnimating(false);
+          }, 50);
+        } else {
+          setIsAnimating(false);
+        }
+        resolve();
+      });
+    });
   };
 
-  const hideSettings = () => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(slideAnim, {
-        toValue: -200,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(rotateAnim, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
+  const showSettings = async () => {
+    try {
+      await animate(true);
+    } catch (error) {
+      console.warn('Animation error:', error);
       setIsSettingsVisible(false);
-    });
+    }
+  };
+
+  const hideSettings = async () => {
+    try {
+      await animate(false);
+    } catch (error) {
+      console.warn('Animation error:', error);
+      setIsSettingsVisible(false);
+    }
   };
 
   const rotate = rotateAnim.interpolate({
@@ -110,17 +120,21 @@ export default function Profile({ navigation }: ProfileProps) {
     outputRange: ['0deg', '180deg'],
   });
 
-  const handleSettingsAction = (label: string) => {
-    hideSettings();
-    // Handle different settings actions
-    switch (label) {
-      case 'Logout':
-        // Handle logout
-        break;
-      case 'Edit Profile':
-        // Navigate to edit profile
-        break;
-      // Add other cases as needed
+  const handleSettingsAction = async (label: string) => {
+    try {
+      await hideSettings();
+      // Handle different settings actions
+      switch (label) {
+        case 'Logout':
+          // Handle logout
+          break;
+        case 'Edit Profile':
+          // Navigate to edit profile
+          break;
+        // Add other cases as needed
+      }
+    } catch (error) {
+      console.warn('Settings action error:', error);
     }
   };
 
@@ -132,7 +146,15 @@ export default function Profile({ navigation }: ProfileProps) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+      <ScrollView 
+        showsVerticalScrollIndicator={false} 
+        style={styles.scrollView}
+        scrollEnabled={!isSettingsVisible}
+        onScroll={(event) => {
+          setScrollPosition(event.nativeEvent.contentOffset.y);
+        }}
+        scrollEventThrottle={16}
+      >
         {/* Header with Background */}
         <ImageBackground
           source={pasta2}
@@ -154,56 +176,83 @@ export default function Profile({ navigation }: ProfileProps) {
                   style={styles.settingsButton}
                   onPress={isSettingsVisible ? hideSettings : showSettings}
                 >
-                  <Animated.View style={{ transform: [{ rotate }] }}>
-                    <Ionicons name="chevron-down" size={24} color="#FFF" />
-                  </Animated.View>
+                  <Ionicons name="settings-outline" size={24} color="#FFF" />
                 </TouchableOpacity>
-
-                {/* Settings Dropdown Menu */}
-                {isSettingsVisible && (
-                  <View style={styles.dropdownContainer}>
-                    <TouchableOpacity 
-                      style={styles.dropdownOverlay} 
-                      activeOpacity={1}
-                      onPress={hideSettings}
-                    />
-                    <Animated.View 
-                      style={[
-                        styles.dropdownMenu,
-                        {
-                          opacity: fadeAnim,
-                          transform: [{ translateY: slideAnim }],
-                        },
-                      ]}
-                    >
-                      {settingsOptions.map((option, index) => (
-                        <TouchableOpacity
-                          key={index}
-                          style={styles.dropdownItem}
-                          onPress={() => handleSettingsAction(option.label)}
-                        >
-                          <View style={[styles.dropdownIconContainer, { backgroundColor: `${option.color}10` }]}>
-                            <Ionicons name={option.icon as IconName} size={22} color={option.color} />
-                          </View>
-                          <Text style={styles.dropdownItemText}>{option.label}</Text>
-                          <Ionicons name="chevron-forward" size={20} color="#999" />
-                        </TouchableOpacity>
-                      ))}
-                    </Animated.View>
-                  </View>
-                )}
               </View>
             </View>
           </LinearGradient>
         </ImageBackground>
+
+        {/* Settings Menu */}
+        {(isSettingsVisible || isAnimating) && (
+          <View style={[styles.menuContainer, { top: scrollPosition }]}>
+            <Animated.View 
+              style={[
+                styles.overlay,
+                {
+                  opacity: fadeAnim,
+                  top: -scrollPosition,
+                }
+              ]}
+            >
+              <TouchableOpacity 
+                style={styles.fullSize}
+                onPress={hideSettings}
+                activeOpacity={1}
+              />
+            </Animated.View>
+            <Animated.View 
+              style={[
+                styles.settingsMenu,
+                {
+                  transform: [{ translateY: slideAnim }],
+                  opacity: fadeAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 1],
+                  }),
+                },
+              ]}
+            >
+              <View style={styles.settingsContent}>
+                <View style={styles.settingsHeader}>
+                  <Text style={styles.settingsHeaderText}>Settings</Text>
+                  <TouchableOpacity 
+                    style={styles.closeButton} 
+                    onPress={hideSettings}
+                  >
+                    <Ionicons name="close" size={24} color="#1A1A1A" />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.settingsItems}>
+                  {settingsOptions.map((option, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={[
+                        styles.settingsItem,
+                        index === settingsOptions.length - 1 && { borderBottomWidth: 0 }
+                      ]}
+                      onPress={() => handleSettingsAction(option.label)}
+                    >
+                      <View style={[styles.settingsIconContainer, { backgroundColor: `${option.color}10` }]}>
+                        <Ionicons name={option.icon as IconName} size={22} color={option.color} />
+                      </View>
+                      <Text style={styles.settingsItemText}>{option.label}</Text>
+                      <Ionicons name="chevron-forward" size={20} color="#999" />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            </Animated.View>
+          </View>
+        )}
 
         {/* Profile Info - Elevated Card */}
         <View style={styles.profileCard}>
           <View style={styles.profileSection}>
             <Image source={rohan} style={styles.profileImage} />
             <View style={styles.profileInfo}>
-              <Text style={styles.name}>Greshma</Text>
-              <Text style={styles.bio}>Passionate food creator | Recipe developer</Text>
+              <Text style={styles.name}>Rohan</Text>
+              <Text style={styles.bio}>Passionate food creator</Text>
               
               <View style={styles.statsContainer}>
                 {stats.map((stat, index) => (
@@ -327,7 +376,7 @@ export default function Profile({ navigation }: ProfileProps) {
                   </View>
                 </View>
               </LinearGradient>
-          </TouchableOpacity>
+            </TouchableOpacity>
           </ScrollView>
         </View>
 
@@ -390,7 +439,7 @@ export default function Profile({ navigation }: ProfileProps) {
                   <Text style={styles.collectionCount}>15 recipes</Text>
                 </View>
               </LinearGradient>
-                  </TouchableOpacity>
+            </TouchableOpacity>
 
             <TouchableOpacity style={styles.collectionCard}>
               <LinearGradient
@@ -405,7 +454,7 @@ export default function Profile({ navigation }: ProfileProps) {
                   </View>
                   <Text style={styles.collectionTitle}>Healthy</Text>
                   <Text style={styles.collectionCount}>6 recipes</Text>
-              </View>
+                </View>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -697,52 +746,91 @@ const styles = StyleSheet.create({
     color: '#007AFF',
     fontWeight: '600',
   },
-  dropdownContainer: {
+  menuContainer: {
     position: 'absolute',
-    top: Platform.OS === 'android' ? 55 : 45,
+    left: 0,
     right: 0,
-    width: width,
-    height: height,
-    zIndex: 1000,
-  },
-  dropdownOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  dropdownMenu: {
-    position: 'absolute',
     top: 0,
-    right: 20,
-    width: 280,
+    bottom: 0,
+    zIndex: 100,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    zIndex: 100,
+  },
+  fullSize: {
+    width: '100%',
+    height: '100%',
+  },
+  settingsMenu: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: Platform.OS === 'android' ? 160 : 180,
+    bottom: 0,
     backgroundColor: '#FFF',
-    borderRadius: 12,
-    paddingVertical: 8,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 4,
+      height: 2,
     },
     shadowOpacity: 0.15,
-    shadowRadius: 12,
+    shadowRadius: 16,
     elevation: 8,
+    zIndex: 101,
   },
-  dropdownItem: {
+  settingsContent: {
+    backgroundColor: '#FFF',
+    overflow: 'hidden',
+    height: '100%',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+  settingsHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    height: 60,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0',
+    backgroundColor: '#FFF',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+  settingsItems: {
+    paddingVertical: 8,
+  },
+  settingsItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
   },
-  dropdownIconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  settingsHeaderText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1A1A1A',
+  },
+  closeButton: {
+    padding: 8,
+    marginRight: -8,
+    borderRadius: 20,
+  },
+  settingsIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 16,
   },
-  dropdownItemText: {
+  settingsItemText: {
     flex: 1,
     fontSize: 16,
     color: '#1A1A1A',
