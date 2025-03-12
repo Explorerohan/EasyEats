@@ -118,52 +118,52 @@ export default function App({ navigation }: HomeProps) {
           >
             <View style={styles.categoryItem}>
               <Image
-                source={pizza}
+                source={curry}
                 style={styles.categoryImage}
               />
-              <Text style={styles.categoryIcon}>🍕 Pizza</Text>
+              <Text style={styles.categoryIcon}>Indian</Text>
             </View>
             <View style={styles.categoryItem}>
               <Image
-                source={salad}
+                source={pasta2}
                 style={styles.categoryImage}
               />
-              <Text style={styles.categoryIcon}>🥗 Salad</Text>
+              <Text style={styles.categoryIcon}>Italian</Text>
             </View>
             <View style={styles.categoryItem}>
               <Image
-                source={burger}
+                source={curry}
                 style={styles.categoryImage}
               />
-              <Text style={styles.categoryIcon}>🍔 Burgers</Text>
-            </View>
-            <View style={styles.categoryItem}>
-              <Image
-                source={pasta}
-                style={styles.categoryImage}
-              />
-              <Text style={styles.categoryIcon}>🍝 Pasta</Text>
+              <Text style={styles.categoryIcon}>Nepalese</Text>
             </View>
             <View style={styles.categoryItem}>
               <Image
                 source={shusi}
                 style={styles.categoryImage}
               />
-              <Text style={styles.categoryIcon}>🍣 Sushi</Text>
+              <Text style={styles.categoryIcon}>Japanese</Text>
             </View>
             <View style={styles.categoryItem}>
               <Image
-                source={steak}
+                source={beef}
                 style={styles.categoryImage}
               />
-              <Text style={styles.categoryIcon}>🥩 Steak</Text>
+              <Text style={styles.categoryIcon}>American</Text>
+            </View>
+            <View style={styles.categoryItem}>
+              <Image
+                source={vege}
+                style={styles.categoryImage}
+              />
+              <Text style={styles.categoryIcon}>Chinese</Text>
             </View>
             <View style={styles.categoryItem}>
               <Image
                 source={dessert}
                 style={styles.categoryImage}
               />
-              <Text style={styles.categoryIcon}>🍰 Desserts</Text>
+              <Text style={styles.categoryIcon}>Desserts</Text>
             </View>
           </ScrollView>
         </View>
