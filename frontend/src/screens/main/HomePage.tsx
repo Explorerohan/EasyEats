@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { categories, trendingRecipes, Category, Recipe } from '../../Data/statiData';
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ButtomNavBar from '../../components/ButtomNavBar';
 
 type RootStackParamList = {
   Home: undefined;
@@ -162,6 +163,7 @@ export default function HomePage({ navigation }: HomeProps) {
           </ScrollView>
         </View>
       </ScrollView>
+      <ButtomNavBar navigation={navigation} />
     </SafeAreaView>
   );
 }

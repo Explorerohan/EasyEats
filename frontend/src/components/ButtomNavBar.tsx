@@ -220,4 +220,70 @@ export interface Category {
       followers: 1234,
       following: 567
     }
-  }; 
+  };
+
+import React from 'react';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
+interface Props {
+  navigation: any;
+}
+
+const ButtomNavBar: React.FC<Props> = ({ navigation }) => {
+  const currentRoute = navigation.getState().routes[navigation.getState().index].name;
+
+  const tabs = [
+    { name: 'HomePage', icon: 'home', label: 'Home' },
+    { name: 'Discover', icon: 'search', label: 'Discover' },
+    { name: 'Favorites', icon: 'heart', label: 'Favorites' },
+    { name: 'Profile', icon: 'person', label: 'Profile' },
+  ];
+
+  return (
+    <View style={navStyles.navBar}>
+      {tabs.map(tab => {
+        const isActive = currentRoute === tab.name;
+        return (
+          <TouchableOpacity key={tab.name} onPress={() => navigation.navigate(tab.name)} style={navStyles.tab}>
+            <Ionicons name={tab.icon as any} size={28} color={isActive ? '#007AFF' : '#333'} />
+            <Text style={[navStyles.label, isActive && { color: '#007AFF', fontWeight: 'bold' }]}>{tab.label}</Text>
+            {isActive && <View style={navStyles.activeDot} />}
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+};
+
+const navStyles = StyleSheet.create({
+  navBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 60,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+  tab: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  label: {
+    fontSize: 12,
+    color: '#333',
+    textAlign: 'center',
+  },
+  activeDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#007AFF',
+    marginTop: 2,
+    alignSelf: 'center',
+  },
+});
+
+export default ButtomNavBar; 
